@@ -1,17 +1,17 @@
 import yfinance as yf
 import streamlit as st
 
-# 定義 ETF 代碼
+# 美股ETF
 etf_symbols = ['ACWI', 'AGG', 'AOA', 'AOR', 'BIL', 'BLV', 'BND', 'BNDW', 'BNDX', 'BSV', 'DFAS', 'DFAX', 'DFCF', 
                'DFE', 'DFSD', 'DFUV', 'DUHP', 'EWT', 'HEFA', 'ICSH', 'IEFA', 'IEMG', 'IJR', 'LQD', 'SGOV', 'SHV', 
                'SHY', 'TIP', 'TLT', 'URTH', 'VB', 'VCIT', 'VEA', 'VGK', 'VNQ', 'VNQI', 'VSS', 'VT', 'VTI', 'VTIP', 'VTV']
 
-# 函數：下載 ETF 歷史數據
+# 下載 ETF 歷史數據
 @st.cache_data
 def download_etf_data(symbol):
     return yf.download(symbol, start="2013-01-01", end="2023-12-31")['Adj Close']
 
-# 函數：計算相對動能（過去 3 個月收益率）
+# 計算相對動能（過去 3 個月收益率）
 @st.cache_data
 def calculate_relative_momentum(etf_symbols):
     etf_3m_returns = {}
@@ -23,7 +23,7 @@ def calculate_relative_momentum(etf_symbols):
     top_3_etfs = sorted(etf_3m_returns, key=etf_3m_returns.get, reverse=True)[:3]
     return top_3_etfs
 
-# 函數：計算絕對動能（是否適合投資）
+# 計算絕對動能（是否適合投資）
 @st.cache_data
 def calculate_absolute_momentum(etf_data, risk_free_rate=0.5):
     twelve_month_return = (etf_data[-1] / etf_data[-252] - 1) * 100  # 過去 12 個月
